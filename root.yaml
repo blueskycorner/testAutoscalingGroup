@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: App Migration - Root stack
+
+Parameters:
+  ProjectName:
+    Description: Project name used for naming and tagging
+    Type: String
+    Default: test1
+  TemplateBucket:
+    Description: S3 bucket from which nested templates are fetched
+    Type: String
+
+Resources:
+  vpc:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://s3.amazonaws.com/${TemplateBucket}/test1/vpc.yaml
+      Parameters:
+        ProjectName: !Ref ProjectName
+
+# Outputs:
+#   # GLOBAL OUTPUTS
+#   EipBastion:
+#     Description: Bastion EIP
+#     Value: !GetAtt vpc.Outputs.OutBastionEIP
